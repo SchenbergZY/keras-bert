@@ -26,6 +26,6 @@ def get_inputs(seq_len):
         shape=(seq_len,),
         name='Input-Masked',
     )
-    aa_mask = keras.layers.Mask(0,name='Input-Token-mask')(aa)
-    bb_mask = keras.layers.Mask(0,name='Input-Segment-mask')(bb)
+    aa_mask = keras.layers.Masking(0,name='Input-Token-mask')(aa)
+    bb_mask = keras.layers.Masking(0,name='Input-Segment-mask')(bb)
     return [aa_mask,bb_mask,cc]
