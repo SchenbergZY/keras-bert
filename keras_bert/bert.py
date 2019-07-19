@@ -96,7 +96,22 @@ def get_model(token_num,
             return False
         return trainable
 
-    inputs = get_inputs(seq_len=seq_len)
+    #inputs = get_inputs(seq_len=seq_len)
+    aa = keras.layers.Input(
+        shape=(seq_len,),
+        name='Input-Token',
+    )
+    bb = keras.layers.Input(
+        shape=(seq_len,),
+        name='Input-Segment',
+    )
+    cc = keras.layers.Input(
+        shape=(seq_len,),
+        name='Input-Masked',
+    )
+    aa_mask = keras.layers.Masking(0,name='Input-Token-mask')(aa)
+    bb_mask = keras.layers.Masking(0,name='Input-Segment-mask')(bb)
+    inputs =  [aa_mask,bb_mask,cc]
     embed_layer, embed_weights = get_embedding(
         inputs,
         token_num=token_num,
@@ -136,13 +151,13 @@ def get_model(token_num,
             activation='softmax',
             name='NSP',
         )(nsp_dense_layer)
-        model = keras.models.Model(inputs=inputs, outputs=[masked_layer, nsp_pred_layer])
+        model = keras.models.Model(inputs=[aa,bb,cc], outputs=[masked_layer, nsp_pred_layer])
         for layer in model.layers:
             layer.trainable = _trainable(layer)
         return model
     else:
         inputs = inputs[:2]
-        model = keras.models.Model(inputs=inputs, outputs=transformed)
+        model = keras.models.Model(inputs=[aa,bb,cc], outputs=transformed)
         for layer in model.layers:
             layer.trainable = _trainable(layer)
         if isinstance(output_layer_num, int):
