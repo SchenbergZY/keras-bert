@@ -42,8 +42,8 @@ def build_model_from_config(config_file,
     """
     with open(config_file, 'r') as reader:
         config = json.loads(reader.read())
-    #if seq_len is not None:
-    #    config['max_position_embeddings'] = seq_len = min(seq_len, config['max_position_embeddings'])
+    if seq_len is not None:
+        config['max_position_embeddings'] = seq_len = min(seq_len, config['max_position_embeddings'])
     if trainable is None:
         trainable = training
     model = get_model(
