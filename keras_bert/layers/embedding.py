@@ -39,7 +39,7 @@ def get_embedding(inputs, token_num, pos_num, embed_dim, dropout_rate=0.1, train
             name='Embedding-Token',
         )(inputs[0]),
         keras.layers.Embedding(
-            input_dim=2, #1 or 2
+            input_dim=1, #1 or 2
             output_dim=embed_dim,
             trainable=trainable,
             name='Embedding-Segment',
